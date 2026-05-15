@@ -26,9 +26,10 @@ print(f"Test: {len(test)} mensajes")
 
 # 3. Crear y entrenar el vectorizador
 
-# max_df=0.95 ignora palabras que aparecen en mas del 95% de los mensajes (palabras muy comunes no ayudan)
-# min_df=2 ignora palabras que aparecen en menos de 2 mensajes (ruido)
-vectorizer = TfidfVectorizer(max_df=0.95, min_df=2)
+# max_df=0.95 ignora palabras en mas del 95% de los mensajes
+# min_df=2 ignora palabras que aparecen en menos de 2 mensajes
+# ngram_range=(1,2) captura palabras individuales y pares de palabras
+vectorizer = TfidfVectorizer(max_df=0.95, min_df=2, ngram_range=(1, 2))
 
 # fit_transform aprende el vocabulario Y transforma los textos de train
 X_train = vectorizer.fit_transform(train["mensaje_limpio"])
