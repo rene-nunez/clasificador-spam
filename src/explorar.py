@@ -1,7 +1,8 @@
 """
 Análisis exploratorio del dataset de spam
 
-Este script carga el dataset y nos ayuda a entender cómo son los datos antes de empezar a limpiarlos y entrenar modelos.
+Este script carga el dataset y nos ayuda a entender cómo son los datos 
+antes de empezar a limpiarlos y entrenar modelos.
 """
 
 import os

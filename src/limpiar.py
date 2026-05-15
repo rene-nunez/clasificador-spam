@@ -1,7 +1,8 @@
 """
 Limpieza de texto del dataset de spam
 
-Elimina duplicados, normaliza el texto (minusculas, puntuacion) y filtra stopwords en espanol usando nltk.
+Elimina duplicados, normaliza el texto (minusculas, puntuacion) 
+y filtra stopwords en español usando nltk.
 """
 
 import os
