@@ -41,13 +41,13 @@ for nombre, archivo in modelos.items():
     modelo = joblib.load(os.path.join(BASE_DIR, "models", archivo))
     y_pred = modelo.predict(X_test)
 
-    # Matriz de confusión
+    # Matriz de confusion
     matriz = confusion_matrix(y_test, y_pred)
     print(f"\nMatriz de confusion:")
-    print(f"Predicción")
-    print(f"ham spam")
-    print(f"Real ham{matriz[0,0]:>4} {matriz[0,1]:>4}")
-    print(f"spam{matriz[1,0]:>4} {matriz[1,1]:>4}")
+    print(f"              Prediccion")
+    print(f"              ham  spam")
+    print(f"Real  ham  {matriz[0,0]:>4} {matriz[0,1]:>4}")
+    print(f"      spam {matriz[1,0]:>4} {matriz[1,1]:>4}")
 
     # Metricas individuales
     precision = precision_score(y_test, y_pred)
@@ -69,6 +69,7 @@ for nombre, archivo in modelos.items():
     archivo_matriz = f"notebook/matriz_{nombre.lower().replace(' ', '_')}.png"
     plt.savefig(os.path.join(BASE_DIR, archivo_matriz))
     print(f"\nGrafico guardado: {archivo_matriz}")
+    print("")
 
 # 4. Analisis de errores comparativo
 print("-" * 30)
@@ -106,7 +107,8 @@ test["fn_todos"] = (
     & (predicciones["SVM"] == 0)
 )
 
-print(f"\nCasos donde tdos los modelos fallaron:")
+print("")
+print(f"Casos donde todos los modelos fallaron:")
 print(f"Falsos positivos (ham que todos dijeron spam): {test['fp_todos'].sum()}")
 print(f"Falsos negativos (spam que todos dijeron ham): {test['fn_todos'].sum()}")
 
