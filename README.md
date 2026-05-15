@@ -36,6 +36,7 @@ clasificador-spam/
 │   ├── explorar.py                   # Analisis exploratorio de datos
 │   ├── limpiar.py                    # Limpieza de texto: duplicados, stopwords, puntuacion
 │   ├── main.py                       # Punto de entrada
+│   ├── prediccion.py                 # Clasifica mensajes nuevos en tiempo real
 │   └── vectorizar.py                 # Convierte texto a vectores numericos (TF-IDF)
 ├── requirements.txt
 └── README.md
@@ -51,3 +52,4 @@ clasificador-spam/
 |4|`src/vectorizar.py`|Convierte texto a vectores TF-IDF, guarda el vectorizador|
 |5|`src/entrenar.py`|Entrena Naive Bayes, Regresion Logistica y SVM, guarda los modelos|
 |6|`src/evaluar.py`|Matriz de confusion, precision, recall, F1-score y analisis de errores|
+|7|`src/prediccion.py`|Clasifica mensajes escritos por el usuario en tiempo real|
