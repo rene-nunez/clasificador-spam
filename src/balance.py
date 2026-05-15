@@ -1,7 +1,8 @@
 """
 Division del dataset en entrenamiento (80%) y prueba (20%)
 
-El modelo se entrena con train y se evalua con test para medir su rendimiento en datos que nunca ha visto.
+El modelo se entrena con train y se evalua con test 
+para medir su rendimiento en datos que nunca ha visto.
 """
 
 import os
