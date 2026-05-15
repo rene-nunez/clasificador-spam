@@ -19,7 +19,10 @@ clasificador-spam/
 │   ├── train.csv                         # 11,800 mensajes para entrenar
 │   └── test.csv                          # 2,950 mensajes para evaluar
 ├── models/
-│   └── vectorizer.pkl                    # Vectorizador TF-IDF entrenado
+│   ├── vectorizer.pkl                    # Vectorizador TF-IDF entrenado
+│   ├── naive_bayes.pkl                   # Modelo Naive Bayes entrenado
+│   ├── regresion_logistica.pkl           # Modelo Regresion Logistica entrenado
+│   └── svm.pkl                           # Modelo SVM entrenado
 ├── notebook/
 │   ├── notes/                            # Investigacion: tokenizacion, TF-IDF, etc.
 │   ├── distribucion_clases.png           # Grafico: distribucion spam/ham
@@ -29,6 +32,7 @@ clasificador-spam/
 │   ├── balance.py                        # Division 80/20 en train y test
 │   ├── descargar_datos.py                # Descarga el dataset desde Hugging Face   
 │   ├── explorar.py                       # Analisis exploratorio de datos
+│   ├── entrenar.py                       # Entrena modelos Naive Bayes, Regresion Logistica y SVM
 │   ├── limpiar.py                        # Limpieza de texto: duplicados, stopwords, puntuacion
 │   ├── main.py                           # Punto de entrada
 │   └── vectorizar.py                     # Convierte texto a vectores numericos (TF-IDF)
@@ -44,3 +48,4 @@ clasificador-spam/
 |2|`src/limpiar.py`|Limpieza de texto: elimina duplicados, stopwords, puntuacion, minusculas|
 |3|`src/balance.py`|Division 80/20 en train y test con stratify|
 |4|`src/vectorizar.py`|Convierte texto a vectores TF-IDF, guarda el vectorizador|
+|5|`src/entrenar.py`|Entrena Naive Bayes, Regresion Logistica y SVM, guarda los modelos|
