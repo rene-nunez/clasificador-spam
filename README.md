@@ -1,6 +1,6 @@
 # Clasificador de Spam
 
-Proyecto de machine learning en Python para detectar mensajes spam. Entrenado con el dataset [synthetic-spam-detection-dataset-spanish](https://huggingface.co/datasets/tanaos/synthetic-spam-detection-dataset-spanish)
+Modelo de machine learning en Python para detectar mensajes spam. Entrenado con el dataset [synthetic-spam-detection-dataset-spanish](https://huggingface.co/datasets/tanaos/synthetic-spam-detection-dataset-spanish)
 (15,016 mensajes en español, generados sintéticamente).
 
 ## Instalación
@@ -9,7 +9,34 @@ Proyecto de machine learning en Python para detectar mensajes spam. Entrenado co
 pip install -r requirements.txt
 ```
 
-## Estructura
+## Instrucciones de uso
+
+Ejecutar el pipeline completo (pasos 1 a 6):
+
+```bash
+python src/main.py
+```
+
+Predecir mensajes propios despues del pipeline:
+
+```bash
+python src/prediccion.py
+```
+
+## Pipeline
+
+|#|Fichero|Descripcion|
+|:---|:---|:---|
+|0|`src/main.py`|Orquestador: ejecuta el pipeline completo automaticamente|
+|1|`src/explorar.py`|Analisis exploratorio: distribucion, longitudes, nubes de palabras|
+|2|`src/limpiar.py`|Limpieza de texto: elimina duplicados, stopwords, puntuacion, minusculas|
+|3|`src/balance.py`|Division 80/20 en train y test con stratify|
+|4|`src/vectorizar.py`|Convierte texto a vectores TF-IDF, guarda el vectorizador|
+|5|`src/entrenar.py`|Entrena Naive Bayes, Regresion Logistica y SVM, guarda los modelos|
+|6|`src/evaluar.py`|Matriz de confusion, precision, recall, F1-score y analisis de errores|
+|7|`src/prediccion.py`|Clasifica mensajes escritos por el usuario en tiempo real|
+
+## Contenido
 
 ```
 clasificador-spam/
@@ -35,21 +62,15 @@ clasificador-spam/
 │   ├── evaluar.py                    # Evaluacion: matriz de confusion, precision, recall, F1
 │   ├── explorar.py                   # Analisis exploratorio de datos
 │   ├── limpiar.py                    # Limpieza de texto: duplicados, stopwords, puntuacion
-│   ├── main.py                       # Punto de entrada
+│   ├── main.py                       # Punto de entrada (orquestador)
 │   ├── prediccion.py                 # Clasifica mensajes nuevos en tiempo real
 │   └── vectorizar.py                 # Convierte texto a vectores numericos (TF-IDF)
-├── requirements.txt
-└── README.md
+├── .gitignore
+├── LICENSE.md
+├── README.md
+└── requirements.txt
 ```
 
-## Pipeline
+## Licencia
 
-|#|Fichero|Descripcion|
-|:---|:---|:---|
-|1|`src/explorar.py`|Analisis exploratorio: distribucion, longitudes, nubes de palabras|
-|2|`src/limpiar.py`|Limpieza de texto: elimina duplicados, stopwords, puntuacion, minusculas|
-|3|`src/balance.py`|Division 80/20 en train y test con stratify|
-|4|`src/vectorizar.py`|Convierte texto a vectores TF-IDF, guarda el vectorizador|
-|5|`src/entrenar.py`|Entrena Naive Bayes, Regresion Logistica y SVM, guarda los modelos|
-|6|`src/evaluar.py`|Matriz de confusion, precision, recall, F1-score y analisis de errores|
-|7|`src/prediccion.py`|Clasifica mensajes escritos por el usuario en tiempo real|
+Distribuido bajo licencia MIT. Consulta [LICENSE](LICENSE.md) para mas información.
