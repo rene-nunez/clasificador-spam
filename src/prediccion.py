@@ -15,12 +15,13 @@ nltk.download("stopwords", quiet=True)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Cargar modelo y vectorizador
+# 1. Cargar modelo y vectorizador
 modelo = joblib.load(os.path.join(BASE_DIR, "models", "regresion_logistica.pkl"))
 vectorizer = joblib.load(os.path.join(BASE_DIR, "models", "vectorizer.pkl"))
 
 stop_words = set(stopwords.words("spanish"))
 
+# 2. Limpiar el mensaje entrante
 def limpiar_mensaje(texto):
     texto = texto.lower()
     texto = re.sub(r"[^a-záéíóúüñ0-9\s]", "", texto)
@@ -28,6 +29,7 @@ def limpiar_mensaje(texto):
     tokens = [t for t in tokens if t not in stop_words and len(t) > 1]
     return " ".join(tokens)
 
+# 3. Vectorizar y predecir el mensaje
 def clasificar(texto):
     limpio = limpiar_mensaje(texto)
     vector = vectorizer.transform([limpio])
@@ -36,10 +38,10 @@ def clasificar(texto):
     confianza = probabilidad[1] if prediccion == 1 else probabilidad[0]
     return prediccion, confianza
 
-# Modo interactivo
+# 4. Modo interactivo
 print("Clasificador de spam")
 print("Escribe un mensaje para clasificarlo (o 'salir' para terminar)")
-print()
+print("")
 
 while True:
     mensaje = input("> ")
@@ -48,5 +50,5 @@ while True:
 
     pred, conf = clasificar(mensaje)
     etiqueta = "spam" if pred == 1 else "ham"
-    print(f"  -> {etiqueta} ({conf:.1%} de confianza)")
-    print()
+    print(f"{etiqueta} ({conf:.1%} de confianza)")
+    print("")
