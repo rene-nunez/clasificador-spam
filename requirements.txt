@@ -4,4 +4,7 @@ datasets
 nltk
 matplotlib
 seaborn
+joblib
 wordcloud
+fastapi
+uvicorn
