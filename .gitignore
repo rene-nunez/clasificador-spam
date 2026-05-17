@@ -1,5 +1,9 @@
-__pycache__/
+.vscode
+
+__pycache__
 *.pyc
 .env
-.ipynb_checkpoints/
-.vscode/
+.ipynb_checkpoints
+
+node_modules
+dist
