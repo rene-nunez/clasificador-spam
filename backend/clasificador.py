@@ -2,15 +2,14 @@
 Servicios de limpieza y clasificación de texto
 
 Contiene:
-- limpiar(): normaliza y filtra el texto para NLP
-- clasificar(): orquesta la pipeline completa de ML
+- limpiar(): normaliza y filtra el texto para NLP.
+- clasificar(): orquesta la pipeline completa de ML.
 """
 
 import re
 import math
 from fastapi import HTTPException
 
-# Módulos del backend
 from config import stop_words, vectorizer, modelos
 from schemas import ClasificacionResponse
 

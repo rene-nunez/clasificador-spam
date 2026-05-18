@@ -58,10 +58,10 @@ def redirigir_a_docs():
     "/api/modelos",
     tags=["Modelos"],
     summary="Listar modelos disponibles",
-    response_description="Lista de nombres de modelos",
+    response_model=list[str],
 )
 def listar_modelos():
-    # Devuelve los nombres de los modelos ML cargados y listos para usar
+    """Devuelve los nombres de los modelos ML cargados y listos para usar."""
     return list(modelos.keys())
 
 @app.post(
@@ -69,9 +69,18 @@ def listar_modelos():
     tags=["Clasificación"],
     summary="Clasificar un mensaje",
     response_model=ClasificacionResponse,
+    responses={
+        400: {"description": "Mensaje vacío, demasiado largo o modelo inválido"},
+        422: {"description": "Error de validación (JSON mal formado)"},
+    },
 )
 def clasificar_endpoint(req: MensajeRequest):
-    # Clasifica un mensaje de texto como spam o ham
+    """
+    Clasifica un mensaje de texto como **spam** o **ham**.
+
+    El mensaje se limpia (stopwords, puntuación) y vectoriza (TF-IDF)
+    antes de pasar al modelo seleccionado.
+    """
     return clasificar(req.mensaje, req.modelo)
 
 @app.get("/{path:path}", tags=["Frontend"], include_in_schema=False)
