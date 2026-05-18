@@ -73,7 +73,7 @@ const view = {
         if (this._errorTimeout) clearTimeout(this._errorTimeout);
 
         const esSpam = resultado.etiqueta === "spam"; // Bool
-        const color = esSpam ? "text-red-500" : "text-green-600";
+        const color = esSpam ? "text-error" : "text-success";
         
         this._display.innerHTML = `
         <div class="flex-1 flex flex-col items-center justify-center anim-result max-w-md mx-auto text-center">
