@@ -45,7 +45,10 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:8000",
+    ],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -101,7 +104,7 @@ def servir_frontend(path: str):
 
     return FileResponse(os.path.join(dist, path))
 
-# Servidor local (reload activo)
+# Servidor local (para desarrollo usar: uvicorn api:app --reload)
 if __name__ == "__main__":
     import uvicorn
 
@@ -109,5 +112,4 @@ if __name__ == "__main__":
         "api:app",
         host="0.0.0.0",
         port=8000,
-        reload=True
     )
