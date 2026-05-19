@@ -75,14 +75,14 @@ texto_spam = " ".join(df[df["label"] == "spam"]["mensaje"])
 # Nube de palabras para ham
 plt.figure(figsize=(10, 5))
 plt.subplot(1, 2, 1)
-nube_ham = WordCloud(width=400, height=300, background_color="white", colormap="blues").generate(texto_ham)
+nube_ham = WordCloud(width=400, height=300, background_color="white", colormap="Blues").generate(texto_ham)
 plt.imshow(nube_ham, interpolation="bilinear")
 plt.axis("off")
 plt.title("Palabras ham más frecuentes")
 
 # Nube de palabras para spam
 plt.subplot(1, 2, 2)
-nube_spam = WordCloud(width=400, height=300, background_color="white", colormap="pinks").generate(texto_spam)
+nube_spam = WordCloud(width=400, height=300, background_color="white", colormap="Reds").generate(texto_spam)
 plt.imshow(nube_spam, interpolation="bilinear")
 plt.axis("off")
 plt.title("Palabras spam más frecuentes")
