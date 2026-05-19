@@ -16,6 +16,8 @@ from sklearn.metrics import (
 )
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+NOTEBOOK_DIR = os.path.join(BASE_DIR, "notebook")
+os.makedirs(NOTEBOOK_DIR, exist_ok=True)
 
 # 1. Cargar test
 test = pd.read_csv(os.path.join(BASE_DIR, "data", "test.csv"))
@@ -66,12 +68,12 @@ for nombre, archivo in modelos.items():
     plt.ylabel("Real")
     plt.xlabel("Predicción")
     plt.tight_layout()
-    archivo_matriz = f"notebook/matriz_{nombre.lower().replace(' ', '_')}.png"
-    plt.savefig(os.path.join(BASE_DIR, archivo_matriz))
-    print(f"\nGrafico guardado: {archivo_matriz}")
+    archivo_matriz = os.path.join(NOTEBOOK_DIR, f"matriz_{nombre.lower().replace(' ', '_')}.png")
+    plt.savefig(archivo_matriz)
+    print(f"\nGráfico guardado: {archivo_matriz}")
     print("")
 
-# 4. Analisis de errores comparativo
+# 4. Análisis de errores comparativo
 print("-" * 30)
 print("Analisis de errores")
 print("-" * 30)
