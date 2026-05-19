@@ -10,7 +10,7 @@ import re
 import pandas as pd
 import nltk
 
-# Descargar stopwords de nltk si no estan instaladas
+# Descargar stopwords de nltk
 nltk.download("stopwords", quiet=True)
 from nltk.corpus import stopwords
 
@@ -31,8 +31,7 @@ df["mensaje"] = df["mensaje"].str.lower()
 
 # 3. Eliminar signos de puntuación y caracteres especiales
 df["mensaje_limpio"] = df["mensaje"].apply(
-    # re.sub reemplaza todo lo que NO sea letra, numero o espacio por vacio
-    lambda texto: re.sub(r"[^a-záéíóúüñA-ZÁÉÍÓÚÜÑ0-9\s]", "", texto)
+    lambda texto: re.sub(r"[^a-záéíóúüñ0-9\s]", "", texto)
 )
 
 # 4. Tokenizar y eliminar stopwords
@@ -45,11 +44,10 @@ def limpiar_texto(texto):
 
 df["mensaje_limpio"] = df["mensaje_limpio"].apply(limpiar_texto)
 
-# Guardar el nuevo dataset limpio
+# 5. Guardar el nuevo dataset limpio
 ruta_salida = os.path.join(BASE_DIR, "data", "spam_limpio.csv")
 df.to_csv(ruta_salida, index=False)
 print(f"\nDataset limpio guardado: data/spam_limpio.csv")
-print(f"Mensajes finales: {len(df)}")
 
 # 6. Mostrar comparación
 print("\nComparacion antes/despues:")
