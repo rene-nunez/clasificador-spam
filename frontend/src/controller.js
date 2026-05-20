@@ -58,7 +58,6 @@ const controller = {
             try {
                 const resultado = await clasificar(mensaje, modelo);
                 view.mostrarResultado(mensaje, resultado);
-                getModelos().then(modelos => view.llenarModelos(modelos)).catch(() => {});
             } catch (err) {
                 view.mostrarError(err.message);
             } finally {
@@ -67,12 +66,26 @@ const controller = {
             }
         });
 
-        // Atajos de teclado
-        this._input.addEventListener("keydown", (event) => {
+        // Atajos del teclado
+
+        // Escape cierra menú sin importar el foco
+        document.addEventListener("keydown", (event) => {
             if (event.key === "Escape") {
-                this._input.value = "";
-                this._input.style.height = "auto";
-            } else if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                const inputFocused = document.activeElement === this._input;
+                view.cerrarMenu();
+                this._input.focus();
+
+                if (inputFocused) {
+                    this._input.value = "";
+                    this._input.style.height = "auto";
+                }
+            }
+        });
+
+        // Enter en el textarea para enviar
+        this._input.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" && !event.shiftKey) {
                 event.preventDefault();
                 this._form.requestSubmit();
             }

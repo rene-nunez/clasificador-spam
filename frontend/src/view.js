@@ -24,6 +24,11 @@ const view = {
         return div.innerHTML;
     },
 
+    // Cierra el menú desplegable de modelos
+    cerrarMenu() {
+        this._menu.classList.add("hidden");
+    },
+
     // Devuelve el nombre del modelo ML seleccionado
     getModelo() {
         return this._modeloActual;
@@ -64,8 +69,12 @@ const view = {
 
     // Muestra el placeholder "Procesando con {modelo}..." en el display central
     mostrarProcesando() {
-        if (this._errorTimeout) clearTimeout(this._errorTimeout); // Evitar sobrescribir mensaje antes de tiempo
-        this._display.innerHTML = `<div class="flex-1 flex items-center justify-center text-base-content/50 text-lg sm:text-xl text-center px-2">Procesando con ${this._modeloActual}...</div>`;
+        if (this._errorTimeout) clearTimeout(this._errorTimeout);
+        this._display.innerHTML = `
+        <div class="flex-1 flex flex-col items-center justify-center gap-4 text-base-content/50 text-center px-2">
+            <span class="loading loading-spinner loading-lg"></span>
+            <span class="text-lg sm:text-xl">Procesando con ${this._modeloActual}...</span>
+        </div>`;
     },
 
     // Renderizar y mostrar el resultado
@@ -106,17 +115,18 @@ const view = {
         document.getElementById("input").disabled = activo;
     },
 
-    // Inicializa la aplicación, define event listeners del menú desplegable y hace una petición GET de los modelos
+    // Inicializa listeners del menú desplegable
     init() {
         document.getElementById("modelo-btn").addEventListener("click", (event) => {
             event.stopPropagation();
-            
+
             if (this._menu.children.length === 0) {
                 getModelos().then(modelos => {
                     if (!modelos.length) return;
                     this.llenarModelos(modelos);
                     this._menu.classList.remove("hidden");
                 }).catch(() => { });
+                return;
             }
 
             this._menu.classList.toggle("hidden");
