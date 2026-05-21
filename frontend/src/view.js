@@ -47,6 +47,8 @@ const view = {
             return `<button class="${this._btnClass(active)}" data-value="${modelo}"><span class="truncate">${modelo}</span>${active ? '<span class="text-[10px] opacity-40 shrink-0">●</span>' : ''}</button>`;
         }).join("");
 
+        this._display.innerHTML = ""; // Quitar el placeholder al cargar los modelos
+
         this._menu.querySelectorAll("button").forEach(btn => {
             btn.addEventListener("click", () => {
                 this._modeloActual = btn.dataset.value;
