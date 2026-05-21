@@ -20,6 +20,7 @@ const controller = {
         this._input.focus(); // Cursor en el input al cargar
 
         // Cargar lista de modelos
+        view.mostrarCargandoModelos();
         try {
             const modelos = await getModelos();
             view.llenarModelos(modelos);
@@ -53,7 +54,7 @@ const controller = {
 
             view.mostrarProcesando();
             view.setCargando(true);
-            await delay(500);
+            await delay(200);
 
             try {
                 const resultado = await clasificar(mensaje, modelo);

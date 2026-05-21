@@ -53,10 +53,10 @@ const view = {
                 this._label.textContent = this._modeloActual;
                 this._menu.classList.add("hidden");
 
-                this._menu.querySelectorAll("button").forEach(btn => {
-                    const active = btn.dataset.value === this._modeloActual;
-                    btn.className = this._btnClass(active);
-                    btn.innerHTML = `<span>${btn.dataset.value}</span>${active ? '<span class="text-[10px] opacity-40">●</span>' : ""}`;
+                this._menu.querySelectorAll("button").forEach(b => {
+                    const active = b.dataset.value === this._modeloActual;
+                    b.className = this._btnClass(active);
+                    b.innerHTML = `<span>${b.dataset.value}</span>${active ? '<span class="text-[10px] opacity-40">●</span>' : ""}`;
                 });
             });
         });
@@ -66,6 +66,15 @@ const view = {
      * Muestra el estado "Procesando..." en el display central.
      * Limpia cualquier error pendiente antes de renderizar.
      */
+
+    // Muestra spinner mientras se cargan los modelos del backend
+    mostrarCargandoModelos() {
+        this._display.innerHTML = `
+        <div class="flex-1 flex flex-col items-center justify-center gap-4 text-base-content/50 text-center px-2">
+            <span class="loading loading-spinner loading-lg"></span>
+            <span class="text-lg sm:text-xl">Cargando modelos...</span>
+        </div>`;
+    },
 
     // Muestra el placeholder "Procesando con {modelo}..." en el display central
     mostrarProcesando() {
