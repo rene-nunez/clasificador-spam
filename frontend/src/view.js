@@ -14,7 +14,7 @@ const view = {
     // Alterna clases CSS del botón del menú de modelos
     _btnClass(active) {
         const base = "w-full text-left px-4 py-2.5 text-sm transition-colors first:rounded-t-xl last:rounded-b-xl flex items-center justify-between";
-        return active ? `${base} text-base-content font-medium` : `${base} text-base-content/50 hover:text-base-content/70 hover:bg-base-200/50`;
+        return active ? `${base} text-base-content font-medium` : `${base} text-base-content/60 hover:text-base-content/80 hover:bg-base-200/50`;
     },
 
     // Prevenir inyección XSS en innerHTML
@@ -44,7 +44,7 @@ const view = {
 
         this._menu.innerHTML = modelos.map(modelo => {
             const active = modelo === this._modeloActual; // Bool
-            return `<button class="${this._btnClass(active)}" data-value="${modelo}"><span>${modelo}</span>${active ? '<span class="text-[10px] opacity-40">●</span>' : ''}</button>`;
+            return `<button class="${this._btnClass(active)}" data-value="${modelo}"><span class="truncate">${modelo}</span>${active ? '<span class="text-[10px] opacity-40 shrink-0">●</span>' : ''}</button>`;
         }).join("");
 
         this._menu.querySelectorAll("button").forEach(btn => {
@@ -56,7 +56,7 @@ const view = {
                 this._menu.querySelectorAll("button").forEach(b => {
                     const active = b.dataset.value === this._modeloActual;
                     b.className = this._btnClass(active);
-                    b.innerHTML = `<span>${b.dataset.value}</span>${active ? '<span class="text-[10px] opacity-40">●</span>' : ""}`;
+                    b.innerHTML = `<span class="truncate">${b.dataset.value}</span>${active ? '<span class="text-[10px] opacity-40 shrink-0">●</span>' : ""}`;
                 });
             });
         });

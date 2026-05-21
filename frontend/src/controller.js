@@ -31,16 +31,6 @@ const controller = {
         // Auto-ajuste del textarea
         this._input.addEventListener("input", () => this._autoResize());
 
-        // Ajuste para teclado móvil
-        if (window.visualViewport) {
-            const fixHeight = () => {
-                document.body.style.minHeight = visualViewport.height + "px";
-                window.scrollTo(0, 0);
-            };
-            window.visualViewport.addEventListener("resize", fixHeight);
-            fixHeight();
-        }
-
         // Envío del formulario
         this._form.addEventListener("submit", async (event) => {
             event.preventDefault();
