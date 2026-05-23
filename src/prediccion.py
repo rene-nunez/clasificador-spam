@@ -51,25 +51,26 @@ def clasificar(texto, modelo):
     return pred, conf
 
 # 4. Modo interactivo
-nombres = list(modelos.keys())
-idx = 0
+if __name__ == "__main__":
+    nombres = list(modelos.keys())
+    idx = 0
 
-print("Clasificador de spam")
-print(f"Modelo actual: {nombres[idx]} (cambia con: /modelo)")
-print("Escribe un mensaje para clasificarlo (o 'salir' para terminar)")
-print("")
-
-while True:
-    entrada = input("> ")
-    if entrada.lower() == "salir":
-        break
-
-    if entrada.startswith("/modelo"):
-        idx = (idx + 1) % len(nombres)
-        print(f"Modelo cambiado a: {nombres[idx]}")
-        continue
-
-    pred, conf = clasificar(entrada, modelos[nombres[idx]])
-    etiqueta = "spam" if pred == 1 else "ham"
-    print(f"{etiqueta} ({conf:.1%} de confianza)")
+    print("Clasificador de spam")
+    print(f"Modelo actual: {nombres[idx]} (cambia con: /modelo)")
+    print("Escribe un mensaje para clasificarlo (o 'salir' para terminar)")
     print("")
+
+    while True:
+        entrada = input("> ")
+        if entrada.lower() == "salir":
+            break
+
+        if entrada.startswith("/modelo"):
+            idx = (idx + 1) % len(nombres)
+            print(f"Modelo cambiado a: {nombres[idx]}")
+            continue
+
+        pred, conf = clasificar(entrada, modelos[nombres[idx]])
+        etiqueta = "spam" if pred == 1 else "ham"
+        print(f"{etiqueta} ({conf:.1%} de confianza)")
+        print("")

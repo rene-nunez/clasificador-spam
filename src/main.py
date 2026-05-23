@@ -18,21 +18,23 @@ SCRIPTS = [
     ("Entrenamiento de modelos", "entrenar.py"),
     ("Evaluacion de modelos", "evaluar.py"),
 ]
-print("-" * 30)
-print("Clasificador de Spam")
-print("-" * 30)
 
-for paso, (nombre, script) in enumerate(SCRIPTS, 1):
-    print(f"\nPaso {paso}/{len(SCRIPTS)}: {nombre}")
-    ruta = os.path.join(BASE_DIR, "src", script)
-    resultado = subprocess.run([sys.executable, ruta], capture_output=True, text=True)
-    print(resultado.stdout)
+if __name__ == "__main__":
+    print("-" * 30)
+    print("Clasificador de Spam")
+    print("-" * 30)
 
-    if resultado.returncode != 0:
-        print(f"Error en paso {paso} ({nombre}):")
-        print(resultado.stderr)
-        sys.exit(1)
+    for paso, (nombre, script) in enumerate(SCRIPTS, 1):
+        print(f"\nPaso {paso}/{len(SCRIPTS)}: {nombre}")
+        ruta = os.path.join(BASE_DIR, "src", script)
+        resultado = subprocess.run([sys.executable, ruta], capture_output=True, text=True)
+        print(resultado.stdout)
 
-print("\n" + "-" * 30)
-print("Pipeline completado exitosamente.")
-print("-" * 30)
+        if resultado.returncode != 0:
+            print(f"Error en paso {paso} ({nombre}):")
+            print(resultado.stderr)
+            sys.exit(1)
+
+    print("\n" + "-" * 30)
+    print("Pipeline completado exitosamente.")
+    print("-" * 30)

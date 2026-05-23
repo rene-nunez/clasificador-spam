@@ -15,44 +15,46 @@ nltk.download("stopwords", quiet=True)
 from nltk.corpus import stopwords
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ruta_csv = os.path.join(BASE_DIR, "data", "spam_dataset.csv")
-df = pd.read_csv(ruta_csv)
 
-print(f"Dataset cargado: {len(df)} mensajes")
+if __name__ == "__main__":
+    ruta_csv = os.path.join(BASE_DIR, "data", "spam_dataset.csv")
+    df = pd.read_csv(ruta_csv)
 
-# 1. Eliminar duplicados
-antes = len(df)
-df = df.drop_duplicates(subset=["mensaje"])
-despues = len(df)
-print(f"\nDuplicados eliminados: {antes - despues}")
+    print(f"Dataset cargado: {len(df)} mensajes")
 
-# 2. Pasar a minusculas
-df["mensaje"] = df["mensaje"].str.lower()
+    # 1. Eliminar duplicados
+    antes = len(df)
+    df = df.drop_duplicates(subset=["mensaje"])
+    despues = len(df)
+    print(f"\nDuplicados eliminados: {antes - despues}")
 
-# 3. Eliminar signos de puntuación y caracteres especiales
-df["mensaje_limpio"] = df["mensaje"].apply(
-    lambda texto: re.sub(r"[^a-záéíóúüñ0-9\s]", "", texto)
-)
+    # 2. Pasar a minusculas
+    df["mensaje"] = df["mensaje"].str.lower()
 
-# 4. Tokenizar y eliminar stopwords
-stop_words = set(stopwords.words("spanish"))
+    # 3. Eliminar signos de puntuación y caracteres especiales
+    df["mensaje_limpio"] = df["mensaje"].apply(
+        lambda texto: re.sub(r"[^a-záéíóúüñ0-9\s]", "", texto)
+    )
 
-def limpiar_texto(texto):
-    tokens = texto.split()
-    tokens = [t for t in tokens if t not in stop_words and len(t) > 1]
-    return " ".join(tokens)
+    # 4. Tokenizar y eliminar stopwords
+    stop_words = set(stopwords.words("spanish"))
 
-df["mensaje_limpio"] = df["mensaje_limpio"].apply(limpiar_texto)
+    def limpiar_texto(texto):
+        tokens = texto.split()
+        tokens = [t for t in tokens if t not in stop_words and len(t) > 1]
+        return " ".join(tokens)
 
-# 5. Guardar el nuevo dataset limpio
-ruta_salida = os.path.join(BASE_DIR, "data", "spam_limpio.csv")
-df.to_csv(ruta_salida, index=False)
-print(f"\nDataset limpio guardado: data/spam_limpio.csv")
+    df["mensaje_limpio"] = df["mensaje_limpio"].apply(limpiar_texto)
 
-# 6. Mostrar comparación
-print("\nComparacion antes/despues:")
-for i in range(3):
-    original = df["mensaje"].iloc[i]
-    limpio = df["mensaje_limpio"].iloc[i]
-    print(f"\nOriginal: {original}")
-    print(f"Limpio: {limpio}")
+    # 5. Guardar el nuevo dataset limpio
+    ruta_salida = os.path.join(BASE_DIR, "data", "spam_limpio.csv")
+    df.to_csv(ruta_salida, index=False)
+    print(f"\nDataset limpio guardado: data/spam_limpio.csv")
+
+    # 6. Mostrar comparación
+    print("\nComparacion antes/despues:")
+    for i in range(3):
+        original = df["mensaje"].iloc[i]
+        limpio = df["mensaje_limpio"].iloc[i]
+        print(f"\nOriginal: {original}")
+        print(f"Limpio: {limpio}")
