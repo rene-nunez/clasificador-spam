@@ -10,6 +10,7 @@ Documentación interactiva disponible en /docs (Swagger UI) y /redoc (ReDoc).
 
 import sys
 import os
+import logging
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -21,7 +22,17 @@ from config import BASE_DIR, modelos
 from schemas import MensajeRequest, ClasificacionResponse
 from clasificador import clasificar
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+)
+logger = logging.getLogger(__name__)
+
 tags_metadata = [
+    {
+        "name": "General",
+        "description": "Endpoints de estado y monitoreo",
+    },
     {
         "name": "Modelos",
         "description": "Listado de modelos ML disponibles para clasificación",
@@ -41,6 +52,8 @@ app = FastAPI(
     description="API REST para clasificar mensajes de texto como **spam** o **ham** usando modelos de Machine Learning entrenados en español.",
     version="1.0.0",
     openapi_tags=tags_metadata,
+    docs_url="/docs",
+    redoc_url="/redoc",
 )
 
 app.add_middleware(
@@ -49,13 +62,22 @@ app.add_middleware(
         "http://localhost:3000",
         "http://localhost:8000",
     ],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type"],
 )
 
 @app.get("/", include_in_schema=False)
 def redirigir_a_docs():
     return RedirectResponse(url="/docs")
+
+@app.get(
+    "/health",
+    tags=["General"],
+    summary="Health check",
+)
+def health():
+    """Verifica que el servidor y los modelos estén operativos."""
+    return {"status": "ok", "modelos": len(modelos)}
 
 @app.get(
     "/api/modelos",
@@ -65,6 +87,7 @@ def redirigir_a_docs():
 )
 def listar_modelos():
     """Devuelve los nombres de los modelos ML cargados y listos para usar."""
+    logger.info("Listado de modelos solicitado")
     return list(modelos.keys())
 
 @app.post(
@@ -84,6 +107,8 @@ def clasificar_endpoint(req: MensajeRequest):
     El mensaje se limpia (stopwords, puntuación) y vectoriza (TF-IDF)
     antes de pasar al modelo seleccionado.
     """
+
+    logger.info("Clasificando mensaje con modelo: %s", req.modelo)
     return clasificar(req.mensaje, req.modelo)
 
 @app.get("/{path:path}", tags=["Frontend"], include_in_schema=False)
@@ -97,12 +122,22 @@ def servir_frontend(path: str):
     dist = os.path.join(BASE_DIR, "frontend", "dist")
     index = os.path.join(dist, "index.html")
 
-    if path == "" or path == "index.html" or not os.path.isfile(os.path.join(dist, path)):
+    requested = os.path.realpath(os.path.join(dist, path))
+    dist_real = os.path.realpath(dist)
+
+    # Protección contra path traversal: solo servir archivos dentro de dist/
+    if not requested.startswith(dist_real):
+        requested = os.path.realpath(os.path.join(BASE_DIR, "frontend", "index.html"))
+        if os.path.isfile(requested):
+            return FileResponse(requested)
+        return FileResponse(index)
+
+    if path == "" or path == "index.html" or not os.path.isfile(requested):
         if os.path.isfile(index):
             return FileResponse(index)
         return FileResponse(os.path.join(BASE_DIR, "frontend", "index.html"))
 
-    return FileResponse(os.path.join(dist, path))
+    return FileResponse(requested)
 
 # Servidor local (para desarrollo usar: uvicorn api:app --reload)
 if __name__ == "__main__":

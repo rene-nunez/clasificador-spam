@@ -10,10 +10,17 @@ from pydantic import BaseModel
 
 # Petición
 class MensajeRequest(BaseModel):
-    mensaje: str # Texto a clasificar
-    modelo: str = "Regresión Logística" # Nombre del modelo ML por defecto
-    
-    model_config = {"json_schema_extra": {"example": {"mensaje": "Gana dinero rápido desde casa", "modelo": "SVM"}}}
+    mensaje: str
+    modelo: str = "Regresión Logística" # Modelo por defecto
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "mensaje": "Gana dinero rápido desde casa",
+                "modelo": "SVM",
+            },
+        },
+    }
 
 # Respuesta
 class ClasificacionResponse(BaseModel):

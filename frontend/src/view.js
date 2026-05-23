@@ -97,7 +97,7 @@ const view = {
         
         this._display.innerHTML = `
         <div class="flex-1 flex flex-col items-center justify-center anim-result max-w-md mx-auto text-center">
-            <div class="${color} text-4xl font-black tracking-tight">${resultado.etiqueta.toUpperCase()}</div>
+            <div class="${color} text-4xl font-black tracking-tight">${this._escapar(resultado.etiqueta.toUpperCase())}</div>
             <div class="mt-5 space-y-2">
                 <div class="text-base text-base-content/60">Confianza: ${resultado.confianza}%</div>
                 <div class="text-base text-base-content/60">"${this._escapar(mensaje)}"</div>
