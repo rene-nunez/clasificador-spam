@@ -67,7 +67,10 @@ app.add_middleware(
 )
 
 @app.get("/", include_in_schema=False)
-def redirigir_a_docs():
+def root():
+    dist_index = os.path.join(BASE_DIR, "frontend", "dist", "index.html")
+    if os.path.isfile(dist_index):
+        return FileResponse(dist_index)
     return RedirectResponse(url="/docs")
 
 @app.get(
