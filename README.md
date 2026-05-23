@@ -1,76 +1,86 @@
 # Clasificador de Spam
 
-Modelo de machine learning en Python para detectar mensajes spam. Entrenado con el dataset [synthetic-spam-detection-dataset-spanish](https://huggingface.co/datasets/tanaos/synthetic-spam-detection-dataset-spanish)
-(15,016 mensajes en español, generados sintéticamente).
+Modelos de machine learning en Python para detectar mensajes spam. Entrenados con el dataset [synthetic-spam-detection-dataset-spanish](https://huggingface.co/datasets/tanaos/synthetic-spam-detection-dataset-spanish) (15,016 mensajes en español, generados sintéticamente).
+
+## Licencia
+
+Distribuido bajo licencia MIT. El dataset también se distribuye bajo MIT, y los archivos generados a partir de él (`data/`, `models/`) heredan la misma licencia. Consulta [LICENSE](LICENSE.md) para más información.
 
 ## Instalación
 
 ```bash
 pip install -r requirements.txt
+cd frontend && npm install
 ```
 
 ## Instrucciones de uso
 
-Ejecutar el pipeline completo (pasos 1 a 6):
+### Pipeline completo (entrenar modelos)
 
 ```bash
 python src/main.py
 ```
 
-Predecir mensajes propios despues del pipeline:
+### Clasificar desde terminal
 
 ```bash
 python src/prediccion.py
 ```
 
-## Pipeline
+### Interfaz web (un solo comando)
 
-|#|Fichero|Descripcion|
+Primero construir el frontend (solo una vez, o al cambiar archivos del frontend):
+
+```bash
+cd frontend && npm run build
+```
+
+Luego iniciar el backend (sirve la API y el frontend estático juntos):
+
+```bash
+python backend/api.py
+```
+
+Abrir [http://localhost:8000](http://localhost:8000).
+
+Si existe `frontend/dist/` (el build), la raíz muestra la app web. Si no, redirige a `/docs`.
+
+### Interfaz web (desarrollo con HMR)
+
+Otra forma de ejecutar el programa si no se construye un dist del frontend con vite es la siguiente:
+
+```bash
+# Terminal 1 (reload activo)
+cd backend && uvicorn api:app --reload
+
+# Terminal 2 — frontend (HMR al editar archivos)
+cd frontend && npm run dev
+```
+
+Abrir [http://localhost:3000](http://localhost:3000).
+
+### Documentación interactiva (Swagger)
+
+Con el backend corriendo, la API expone documentación automática:
+
+- **Swagger UI**: [http://localhost:8000/docs](http://localhost:8000/docs)
+- **ReDoc**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
+
+## Pipeline de entrenamiento (`src/`)
+
+|#|Script|Descripción|
 |:---|:---|:---|
-|0|`src/main.py`|Orquestador: ejecuta el pipeline completo automaticamente|
-|1|`src/explorar.py`|Analisis exploratorio: distribucion, longitudes, nubes de palabras|
-|2|`src/limpiar.py`|Limpieza de texto: elimina duplicados, stopwords, puntuacion, minusculas|
-|3|`src/balance.py`|Division 80/20 en train y test con stratify|
-|4|`src/vectorizar.py`|Convierte texto a vectores TF-IDF, guarda el vectorizador|
-|5|`src/entrenar.py`|Entrena Naive Bayes, Regresion Logistica y SVM, guarda los modelos|
-|6|`src/evaluar.py`|Matriz de confusion, precision, recall, F1-score y analisis de errores|
-|7|`src/prediccion.py`|Clasifica mensajes escritos por el usuario en tiempo real|
+|0|`src/main.py`|Orquestador del pipeline completo|
+|1|`src/descargar_datos.py`|Descarga el dataset desde Hugging Face|
+|2|`src/explorar.py`|Análisis exploratorio: distribución, longitudes, nubes de palabras|
+|3|`src/limpiar.py`|Limpieza: duplicados, stopwords, puntuación, minúsculas|
+|4|`src/balance.py`|División 80/20 en train/test con stratify|
+|5|`src/vectorizar.py`|Convierte texto a vectores TF-IDF|
+|6|`src/entrenar.py`|Entrena Naive Bayes, Regresión Logística y SVM|
+|7|`src/evaluar.py`|Matriz de confusión, precisión, recall, F1-score|
+|8|`src/prediccion.py`|Clasifica mensajes escritos por el usuario en tiempo real|
 
-## Contenido
-
-```
-clasificador-spam/
-├── data/
-│   ├── spam_dataset.csv              # 15,016 mensajes originales
-│   ├── spam_limpio.csv               # 14,750 mensajes limpios (sin duplicados)
-│   ├── train.csv                     # 11,800 mensajes para entrenar
-│   └── test.csv                      # 2,950 mensajes para evaluar
-├── models/
-│   ├── vectorizer.pkl                # Vectorizador TF-IDF entrenado
-│   ├── naive_bayes.pkl               # Modelo Naive Bayes entrenado
-│   ├── regresion_logistica.pkl       # Modelo Regresion Logistica entrenado
-│   └── svm.pkl                       # Modelo SVM entrenado
-├── notebook/
-│   ├── notes/                        # Investigacion: tokenizacion, TF-IDF, etc.
-│   ├── distribucion_clases.png       # Grafico: distribucion spam/ham
-│   ├── histograma_longitud.png       # Grafico: longitudes de mensajes
-│   └── nubes_palabras.png            # Grafico: nubes de palabras
-├── src/
-│   ├── balance.py                    # Division 80/20 en train y test
-│   ├── descargar_datos.py            # Descarga el dataset desde Hugging Face   
-│   ├── entrenar.py                   # Entrena modelos Naive Bayes, Regresion Logistica y SVM  
-│   ├── evaluar.py                    # Evaluacion: matriz de confusion, precision, recall, F1
-│   ├── explorar.py                   # Analisis exploratorio de datos
-│   ├── limpiar.py                    # Limpieza de texto: duplicados, stopwords, puntuacion
-│   ├── main.py                       # Punto de entrada (orquestador)
-│   ├── prediccion.py                 # Clasifica mensajes nuevos en tiempo real
-│   └── vectorizar.py                 # Convierte texto a vectores numericos (TF-IDF)
-├── .gitignore
-├── LICENSE.md
-├── README.md
-└── requirements.txt
-```
-
-## Licencia
-
-Distribuido bajo licencia MIT. Consulta [LICENSE](LICENSE.md) para mas información.
+> [!NOTE]
+> Los scripts en `src/` son el pipeline de entrenamiento.
+> La **API** que sirve las predicciones web está en `backend/`.
+> No confundir `src/main.py` (orquestador de entrenamiento) con `backend/api.py` (servidor FastAPI).
