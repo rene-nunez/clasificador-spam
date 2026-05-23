@@ -10,6 +10,7 @@ import sys
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCRIPTS = [
+    ("Descarga de datos", "descargar_datos.py"),
     ("Exploracion de datos", "explorar.py"),
     ("Limpieza de texto", "limpiar.py"),
     ("Division train/test", "balance.py"),
