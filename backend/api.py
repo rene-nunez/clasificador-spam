@@ -49,7 +49,7 @@ tags_metadata = [
 
 app = FastAPI(
     title="Clasificador de Spam",
-    description="API REST para clasificar mensajes de texto como **spam** o **ham** usando modelos de Machine Learning entrenados en español.",
+    description="API REST para clasificar mensajes de texto como spam o ham usando modelos de Machine Learning entrenados en español.",
     version="1.0.0",
     openapi_tags=tags_metadata,
     docs_url="/docs",

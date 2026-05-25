@@ -49,6 +49,16 @@ Alternativa a la interfaz web, desde la línea de comandos:
 python src/prediccion.py
 ```
 
+## API
+
+Backend desarrollado con **FastAPI** en `backend/api.py`. Documentación interactiva de cada endpoint disponible en `/docs` al ejecutar el servidor.
+
+|Método|Ruta|Descripción|
+|:---|:---|:---|
+|`GET`|`/health`|Health check del servidor|
+|`GET`|`/api/modelos`|Lista los modelos disponibles|
+|`POST`|`/api/clasificar`|Clasifica un mensaje como spam o ham|
+
 ## Pipeline
 
 |#|Script|Descripción|
