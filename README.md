@@ -69,4 +69,4 @@ Este proyecto tiene fines **educativos y de investigación**. Clasificar mensaje
 
 ## Licencia
 
-Este proyecto y el dataset utilizado se distribuyen bajo licencia MIT. Consulta [LICENSE](./LICENSE) para más información.
+Este proyecto y el dataset utilizado se distribuyen bajo la licencia MIT. Consulta [LICENSE](./LICENSE) para más información.
