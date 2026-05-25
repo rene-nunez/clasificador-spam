@@ -1,53 +1,44 @@
 import {getModelos} from "./api.js";
 
 const view = {
-    _modeloActual: "Regresión Logística", // Modelo ML seleccionado actualmente
+    _modeloActual: "Regresión Logística", // Modelo seleccionado actualmente
     _errorTimeout: null,
 
-    // Elementos de la interfaz
-    _display: document.getElementById("display"), // Contenedor principal
-    _menu: document.getElementById("modelo-menu"), // Menú desplegable de selección de modelos
-    _label: document.getElementById("modelo-label"), // Etiqueta que muestra el modelo activo
+    _display: document.getElementById("display"),
+    _menu: document.getElementById("modelo-menu"),
+    _label: document.getElementById("modelo-label"),
 
-    // Métodos
-
-    // Alterna clases CSS del botón del menú de modelos
     _btnClass(active) {
         const base = "w-full text-left px-4 py-2.5 text-sm transition-colors first:rounded-t-xl last:rounded-b-xl flex items-center justify-between";
         return active ? `${base} text-base-content font-medium` : `${base} text-base-content/60 hover:text-base-content/80 hover:bg-base-200/50`;
     },
 
-    // Prevenir inyección XSS en innerHTML
+    // Sanitiza texto usando el DOM
     _escapar(string) {
         const div = document.createElement("div");
         div.textContent = string;
         return div.innerHTML;
     },
 
-    // Cierra el menú desplegable de modelos
     cerrarMenu() {
         this._menu.classList.add("hidden");
     },
 
-    // Devuelve el nombre del modelo ML seleccionado
     getModelo() {
         return this._modeloActual;
     },
 
-    // Puebla el menú desplegable con la lista de modelos disponibles
+    // Construye el menú con los modelos disponibles. Si el actual ya no existe, usa el primero
     llenarModelos(modelos) {
         if (!modelos.length) return;
 
-        // Actualizar UI y atributos
         this._modeloActual = modelos.includes(this._modeloActual) ? this._modeloActual : modelos[0];
         this._label.textContent = this._modeloActual;
 
         this._menu.innerHTML = modelos.map(modelo => {
-            const active = modelo === this._modeloActual; // Bool
+            const active = modelo === this._modeloActual;
             return `<button class="${this._btnClass(active)}" data-value="${modelo}"><span class="truncate">${modelo}</span>${active ? '<span class="text-[10px] opacity-40 shrink-0">●</span>' : ''}</button>`;
         }).join("");
-
-        this._display.innerHTML = ""; // Quitar el placeholder al cargar los modelos
 
         this._menu.querySelectorAll("button").forEach(btn => {
             btn.addEventListener("click", () => {
@@ -64,8 +55,6 @@ const view = {
         });
     },
 
-
-    // Pantalla de bienvenida con instrucciones
     mostrarPlaceholder() {
         this._display.innerHTML = `
         <div class="flex-1 flex flex-col items-center justify-center text-center px-6">
@@ -80,7 +69,6 @@ const view = {
         </div>`;
     },
 
-    // Muestra spinner mientras se cargan los modelos del backend
     mostrarCargandoModelos() {
         this._display.innerHTML = `
         <div class="flex-1 flex flex-col items-center justify-center gap-4 text-base-content/50 text-center px-2">
@@ -89,7 +77,6 @@ const view = {
         </div>`;
     },
 
-    // Muestra el placeholder "Procesando con {modelo}..." en el display central
     mostrarProcesando() {
         if (this._errorTimeout) clearTimeout(this._errorTimeout);
         this._display.innerHTML = `
@@ -99,11 +86,10 @@ const view = {
         </div>`;
     },
 
-    // Renderizar y mostrar el resultado
     mostrarResultado(mensaje, resultado) {
         if (this._errorTimeout) clearTimeout(this._errorTimeout);
 
-        const esSpam = resultado.etiqueta === "spam"; // Bool
+        const esSpam = resultado.etiqueta === "spam";
         const color = esSpam ? "text-error" : "text-success";
         
         this._display.innerHTML = `
@@ -116,7 +102,7 @@ const view = {
         </div>`;
     },
 
-    // Mostrar mensaje de error por 5 segundos
+    // Los errores se autolimpian a los 5 segundos para no bloquear la interfaz
     mostrarError(texto) {
         if (this._errorTimeout) clearTimeout(this._errorTimeout);
         
@@ -131,17 +117,16 @@ const view = {
         }, 5000);
     },
 
-    // Habilita o no los controles de entrada durante una petición
     setCargando(activo) {
         document.getElementById("btn").disabled = activo;
         document.getElementById("input").disabled = activo;
     },
 
-    // Inicializa listeners del menú desplegable
     init() {
         document.getElementById("modelo-btn").addEventListener("click", (event) => {
             event.stopPropagation();
 
+            // Pide los modelos al backend solo en el primer clic
             if (this._menu.children.length === 0) {
                 getModelos().then(modelos => {
                     if (!modelos.length) return;
