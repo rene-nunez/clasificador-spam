@@ -64,10 +64,21 @@ const view = {
         });
     },
 
-    /**
-     * Muestra el estado "Procesando..." en el display central.
-     * Limpia cualquier error pendiente antes de renderizar.
-     */
+
+    // Pantalla de bienvenida con instrucciones
+    mostrarPlaceholder() {
+        this._display.innerHTML = `
+        <div class="flex-1 flex flex-col items-center justify-center text-center px-6">
+            <div class="text-base text-base-content/50 leading-relaxed space-y-3">
+                <p>Escribe un mensaje y selecciona un modelo</p>
+                <div class="flex gap-3 justify-center text-xs text-base-content/40">
+                    <span>↑↓ historial</span>
+                    <span>Enter enviar</span>
+                    <span>Esc borrar</span>
+                </div>
+            </div>
+        </div>`;
+    },
 
     // Muestra spinner mientras se cargan los modelos del backend
     mostrarCargandoModelos() {

@@ -25,6 +25,7 @@ const controller = {
         try {
             const modelos = await getModelos();
             view.llenarModelos(modelos);
+            view.mostrarPlaceholder();
         } catch {
             view.mostrarError("No se pudo conectar con el servidor");
         }
@@ -39,7 +40,9 @@ const controller = {
             const mensaje = this._input.value.trim();
             if (!mensaje) return;
 
-            this._history.push(mensaje);
+            if (this._history[this._history.length - 1] !== mensaje) {
+                this._history.push(mensaje);
+            }
             this._historyIndex = this._history.length;
 
             const modelo = view.getModelo();
