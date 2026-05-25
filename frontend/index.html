@@ -39,9 +39,9 @@
     <main id="display" class="flex-1 flex flex-col mx-auto w-full max-w-2xl px-4 sm:px-5 overflow-y-auto overflow-x-hidden min-h-0"></main>
   
     <!-- area del input, botón y selector del modelo -->
-    <footer class="border-t border-base-200/40 px-3 sm:px-6 pb-2 sm:pb-4 pt-1">
+    <footer class="px-3 sm:px-6 pb-2 sm:pb-4 pt-1">
         <div class="max-w-2xl mx-auto">
-            <div class="border-2 border-base-300 rounded-2xl bg-base-100 shadow-xs transition-colors">
+            <div class="border border-base-300 rounded-2xl bg-base-100 shadow-sm transition-colors">
                 <form id="form" class="relative">
                     <textarea id="input" rows="1" maxlength="5000" placeholder="Escribe un mensaje aquí" class="w-full resize-none leading-relaxed text-base px-3 sm:px-4 pt-2 sm:pt-3.5 pb-1.5 sm:pb-2 pr-10 sm:pr-12 min-h-10 sm:min-h-12 max-h-[30vh] sm:max-h-[40vh] overflow-y-auto focus:outline-none"></textarea>
                     <div tooltip="Enviar ↵" tooltip-left class="absolute bottom-1.5 sm:bottom-2 right-1.5 sm:right-2">
@@ -55,7 +55,7 @@
                 <div class="flex items-center px-3 sm:px-4 py-1.5 sm:py-2 relative">
                     <div tooltip="Cambiar modelo" tooltip-right>
                         <button id="modelo-btn" class="flex items-center gap-1.5 text-sm font-medium text-base-content/70 hover:text-base-content transition-colors">
-                            <span id="modelo-label" class="truncate max-w-30 sm:max-w-50">Regresión Logística</span>
+                            <span id="modelo-label" class="truncate max-w-36 sm:max-w-50">Regresión Logística</span>
                             <svg class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
                             </svg>
