@@ -1,10 +1,6 @@
 # Clasificador de Spam
 
-Modelos de machine learning en Python para detectar mensajes spam. Entrenados con el dataset [synthetic-spam-detection-dataset-spanish](https://huggingface.co/datasets/tanaos/synthetic-spam-detection-dataset-spanish) (15,016 mensajes en español, generados sintéticamente).
-
-## Licencia
-
-Distribuido bajo licencia MIT. El dataset también se distribuye bajo MIT, y los archivos generados a partir de él (`data/`, `models/`) heredan la misma licencia. Consulta [LICENSE](LICENSE.md) para más información.
+Modelos de machine learning para detectar mensajes spam en español. Entrenados con el dataset [synthetic-spam-detection-dataset-spanish](https://huggingface.co/datasets/tanaos/synthetic-spam-detection-dataset-spanish) (15,016 mensajes sintéticos).
 
 ## Instalación
 
@@ -15,7 +11,31 @@ cd frontend && npm install
 
 ## Instrucciones de uso
 
-### Pipeline completo (entrenar modelos)
+### Interfaz web (producción)
+
+Construir el frontend y arrancar el backend (un solo proceso, mismo puerto):
+
+```bash
+cd frontend && npm run build
+python backend/api.py
+```
+
+Abrir [http://localhost:8000](http://localhost:8000).
+
+### Interfaz web (desarrollo)
+
+Dos procesos separados con recarga automática al editar archivos:
+
+```bash
+cd backend && uvicorn api:app --reload
+cd frontend && npm run dev
+```
+
+Abrir [http://localhost:3000](http://localhost:3000).
+
+### Entrenar modelos (opcional)
+
+Los modelos ya están pre-entrenados e incluidos en el repositorio. Solo ejecutar si se desea reentrenar:
 
 ```bash
 python src/main.py
@@ -23,64 +43,30 @@ python src/main.py
 
 ### Clasificar desde terminal
 
+Alternativa a la interfaz web, desde la línea de comandos:
+
 ```bash
 python src/prediccion.py
 ```
 
-### Interfaz web (un solo comando)
-
-Primero construir el frontend (solo una vez, o al cambiar archivos del frontend):
-
-```bash
-cd frontend && npm run build
-```
-
-Luego iniciar el backend (sirve la API y el frontend estático juntos):
-
-```bash
-python backend/api.py
-```
-
-Abrir [http://localhost:8000](http://localhost:8000).
-
-Si existe `frontend/dist/` (el build), la raíz muestra la app web. Si no, redirige a `/docs`.
-
-### Interfaz web (desarrollo con HMR)
-
-Otra forma de ejecutar el programa si no se construye un dist del frontend con vite es la siguiente:
-
-```bash
-# Terminal 1 (reload activo)
-cd backend && uvicorn api:app --reload
-
-# Terminal 2 — frontend (HMR al editar archivos)
-cd frontend && npm run dev
-```
-
-Abrir [http://localhost:3000](http://localhost:3000).
-
-### Documentación interactiva (Swagger)
-
-Con el backend corriendo, la API expone documentación automática:
-
-- **Swagger UI**: [http://localhost:8000/docs](http://localhost:8000/docs)
-- **ReDoc**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
-
-## Pipeline de entrenamiento (`src/`)
+## Pipeline
 
 |#|Script|Descripción|
 |:---|:---|:---|
 |0|`src/main.py`|Orquestador del pipeline completo|
 |1|`src/descargar_datos.py`|Descarga el dataset desde Hugging Face|
-|2|`src/explorar.py`|Análisis exploratorio: distribución, longitudes, nubes de palabras|
-|3|`src/limpiar.py`|Limpieza: duplicados, stopwords, puntuación, minúsculas|
-|4|`src/balance.py`|División 80/20 en train/test con stratify|
-|5|`src/vectorizar.py`|Convierte texto a vectores TF-IDF|
-|6|`src/entrenar.py`|Entrena Naive Bayes, Regresión Logística y SVM|
-|7|`src/evaluar.py`|Matriz de confusión, precisión, recall, F1-score|
-|8|`src/prediccion.py`|Clasifica mensajes escritos por el usuario en tiempo real|
+|2|`src/explorar.py`|Análisis exploratorio de los datos|
+|3|`src/limpiar.py`|Limpieza y normalización del texto|
+|4|`src/balance.py`|División en train y test|
+|5|`src/vectorizar.py`|Vectorización TF-IDF|
+|6|`src/entrenar.py`|Entrenamiento de los modelos|
+|7|`src/evaluar.py`|Evaluación y métricas de rendimiento|
+|8|`src/prediccion.py`|Clasificación interactiva desde terminal|
 
-> [!NOTE]
-> Los scripts en `src/` son el pipeline de entrenamiento.
-> La **API** que sirve las predicciones web está en `backend/`.
-> No confundir `src/main.py` (orquestador de entrenamiento) con `backend/api.py` (servidor FastAPI).
+## Ética y finalidad
+
+Este proyecto tiene fines **educativos y de investigación**. Clasificar mensajes como spam o ham puede ayudar a filtrar contenido no deseado, pero también implica decisiones sobre qué se considera spam. El dataset usado es sintético y no contiene mensajes reales de usuarios, lo que elimina riesgos de privacidad. Los modelos no deben usarse para censurar contenido ni para tomar decisiones automatizadas sin supervisión humana.
+
+## Licencia
+
+Este proyecto y el dataset utilizado se distribuyen bajo licencia MIT. Consulta [LICENSE](./LICENSE) para más información.
