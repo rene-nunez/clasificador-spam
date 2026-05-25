@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" crossorigin>
 </head>
-<body class="min-h-dvh flex flex-col overflow-hidden">
+<body class="h-dvh flex flex-col overflow-hidden">
 
   <!-- header -->
     <header class="flex items-center justify-between px-4 sm:px-6 py-2 sm:py-4 border-b border-base-200/40">
@@ -36,7 +36,7 @@
     </header>
 
     <!-- display -->
-    <main id="display" class="flex-1 flex flex-col mx-auto w-full max-w-2xl px-4 sm:px-5 overflow-y-auto min-h-0"></main>
+    <main id="display" class="flex-1 flex flex-col mx-auto w-full max-w-2xl px-4 sm:px-5 overflow-y-auto overflow-x-hidden min-h-0"></main>
   
     <!-- area del input, botón y selector del modelo -->
     <footer class="border-t border-base-200/40 px-3 sm:px-6 pb-2 sm:pb-4 pt-1">
@@ -61,7 +61,7 @@
                             </svg>
                         </button>
                     </div>
-                    <div id="modelo-menu" class="absolute bottom-full left-0 right-0 mb-1 hidden rounded-xl border border-base-300/40 bg-base-100 shadow-lg z-10 overflow-y-auto max-h-60"></div>
+                    <div id="modelo-menu" class="absolute bottom-full left-0 mb-1 hidden rounded-xl border border-base-300/40 bg-base-100 shadow-lg z-10 overflow-y-auto max-h-60 min-w-50 max-w-[90vw] sm:max-w-xs"></div>
                 </div>
             </div>
         </div>
