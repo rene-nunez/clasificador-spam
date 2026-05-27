@@ -51,13 +51,7 @@ python src/prediccion.py
 
 ## API
 
-Backend desarrollado con **FastAPI** en `backend/api.py`. Documentación interactiva de cada endpoint disponible en `/docs` al ejecutar el servidor.
-
-|Método|Ruta|Descripción|
-|:---|:---|:---|
-|`GET`|`/health`|Health check del servidor|
-|`GET`|`/api/modelos`|Lista los modelos disponibles|
-|`POST`|`/api/clasificar`|Clasifica un mensaje como spam o ham|
+Backend desarrollado con FastAPI en `backend/api.py`. Documentación interactiva de cada endpoint disponible en `/docs` al ejecutar el servidor.
 
 ## Pipeline
 
@@ -75,7 +69,7 @@ Backend desarrollado con **FastAPI** en `backend/api.py`. Documentación interac
 
 ## Ética y finalidad
 
-Este proyecto tiene fines **educativos y de investigación**. Clasificar mensajes como spam o ham puede ayudar a filtrar contenido no deseado, pero también implica decisiones sobre qué se considera spam. El dataset usado es sintético y no contiene mensajes reales de usuarios, lo que elimina riesgos de privacidad. Los modelos no deben usarse para censurar contenido ni para tomar decisiones automatizadas sin supervisión humana.
+Este proyecto tiene fines educativos y de investigación. Clasificar mensajes como spam o ham puede ayudar a filtrar contenido no deseado, pero también implica decisiones sobre qué se considera spam. El dataset usado es sintético y no contiene mensajes reales de usuarios, lo que elimina riesgos de privacidad. Los modelos no deben usarse para censurar contenido ni para tomar decisiones automatizadas sin supervisión humana.
 
 ## Licencia
 
