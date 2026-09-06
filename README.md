@@ -1,6 +1,6 @@
 # Clasificador de Spam
 
-Modelos de machine learning para detectar mensajes spam en español. Entrenados con el dataset [synthetic-spam-detection-dataset-spanish](https://huggingface.co/datasets/tanaos/synthetic-spam-detection-dataset-spanish) (15,016 mensajes sintéticos).
+Modelos de machine learning (Naive Bayes, regresión logística y SVM) para detectar mensajes de spam en español. Entrenados con el dataset [synthetic-spam-detection-dataset-spanish](https://huggingface.co/datasets/tanaos/synthetic-spam-detection-dataset-spanish) (15,016 mensajes sintéticos).
 
 ## Instalación
 
