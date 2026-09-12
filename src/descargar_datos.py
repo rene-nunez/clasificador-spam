@@ -15,6 +15,7 @@ if __name__ == "__main__":
     df["label"] = df["spam"].map({0: "ham", 1: "spam"})
 
     ruta_salida = os.path.join(BASE_DIR, "data", "spam_dataset.csv")
+    os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
     df.to_csv(ruta_salida, index=False)
 
     print(f"Dataset guardado en {ruta_salida}")
