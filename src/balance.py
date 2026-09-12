@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     print(f"Dataset cargado: {len(df)} mensajes")
 
-    random_state=42 fija la semilla para que sea reproducible
+    random_state=42
     train, test = train_test_split(
         df, test_size=0.2, random_state=42, stratify=df["spam"]
     )
