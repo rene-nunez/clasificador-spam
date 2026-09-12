@@ -1,4 +1,3 @@
-
 # Entrena Naive Bayes Multinomial, Regresion Logistica y SVM
 
 import os

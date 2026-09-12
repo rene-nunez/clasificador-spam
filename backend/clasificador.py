@@ -6,17 +6,6 @@ from config import stop_words, vectorizer, modelos
 from schemas import ClasificacionResponse
 
 def limpiar(texto: str) -> str:
-    """
-    Limpia y normaliza un mensaje para su procesamiento NLP.
-
-    Pasos:
-    1. Convierte a minúsculas
-    2. Elimina caracteres especiales
-    3. Divide en tokens
-    4. Elimina stopwords
-    5. Elimina palabras muy cortas
-    """
-
     texto = texto.lower()
     texto = re.sub(r"[^a-záéíóúüñ0-9\s]", "", texto)
     tokens = texto.split()
@@ -25,25 +14,6 @@ def limpiar(texto: str) -> str:
     return " ".join(tokens)
 
 def clasificar(mensaje: str, modelo_nombre: str) -> ClasificacionResponse:
-    """
-    Clasifica un mensaje como spam o ham.
-
-    Flujo:
-    1. Validar entrada
-    2. Limpiar texto
-    3. Vectorizar texto
-    4. Ejecutar inferencia ML
-    5. Calcular confianza
-    6. Devolver resultado
-
-    Argumento:
-        mensaje: texto a clasificar.
-        modelo_nombre: nombre del modelo ML a utilizar.
-
-    Return:
-        ClasificacionResponse: resultado con predicción, etiqueta y confianza.
-    """
-
     if not mensaje.strip():
         raise HTTPException(400, "El mensaje no puede estar vacío")
 
@@ -69,7 +39,6 @@ def clasificar(mensaje: str, modelo_nombre: str) -> ClasificacionResponse:
             prob[1] if pred == 1 else prob[0]
         )
     else:
-        # SVM no genera probabilidades directamente. Se usa decision_function y luego una función sigmoide
         d = modelo.decision_function(vector)[0]
 
         d = max(min(d, 100), -100)

@@ -94,31 +94,18 @@ def listar_modelos():
     },
 )
 def clasificar_endpoint(req: MensajeRequest):
-    """
-    Clasifica un mensaje de texto como **spam** o **ham**.
-
-    El mensaje se limpia (stopwords, puntuación) y vectoriza (TF-IDF)
-    antes de pasar al modelo seleccionado.
-    """
-
     logger.info("Clasificando mensaje con modelo: %s", req.modelo)
     return clasificar(req.mensaje, req.modelo)
 
 @app.get("/{path:path}", tags=["Frontend"], include_in_schema=False)
-def servir_frontend(path: str):
-    """
-    Sirve el frontend estático (SPA).
 
-    En producción usa `frontend/dist/`; en desarrollo redirige
-    a /docs para evitar mostrar el HTML fuente sin build.
-    """
+def servir_frontend(path: str):
     dist = os.path.join(BASE_DIR, "frontend", "dist")
     index = os.path.join(dist, "index.html")
 
     requested = os.path.realpath(os.path.join(dist, path))
     dist_real = os.path.realpath(dist)
 
-    # Protección contra path traversal: solo servir archivos dentro de dist/
     if not requested.startswith(dist_real):
         requested = os.path.realpath(os.path.join(BASE_DIR, "frontend", "index.html"))
         if os.path.isfile(requested):
@@ -132,7 +119,6 @@ def servir_frontend(path: str):
 
     return FileResponse(requested)
 
-# Servidor local (para desarrollo usar: uvicorn api:app --reload)
 if __name__ == "__main__":
     import uvicorn
 

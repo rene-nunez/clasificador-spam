@@ -1,6 +1,6 @@
 # Clasificador de Spam
 
-Modelos de ML (Naive Bayes, Regresión logística y SVM) para clasificar mensajes de spam en español, entrenados con el dataset sintético [synthetic-spam-detection-dataset-spanish](https://huggingface.co/datasets/tanaos/synthetic-spam-detection-dataset-spanish) (15.016 mensajes).
+Modelos de ML (Naive Bayes, Regresión logística y SVM) para clasificar mensajes de spam en español, entrenados con el dataset sintético [synthetic-spam-detection-dataset-spanish](https://huggingface.co/datasets/tanaos/synthetic-spam-detection-dataset-spanish) (15,016 mensajes).
 
 ## Instalación
 
