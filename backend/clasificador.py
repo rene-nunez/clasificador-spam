@@ -1,11 +1,3 @@
-"""
-Servicios de limpieza y clasificación de texto
-
-Contiene:
-- limpiar(): normaliza y filtra el texto para NLP.
-- clasificar(): orquesta la pipeline completa de ML.
-"""
-
 import re
 import math
 from fastapi import HTTPException
@@ -30,7 +22,6 @@ def limpiar(texto: str) -> str:
     tokens = texto.split()
     tokens = [t for t in tokens if t not in stop_words and len(t) > 1]
 
-    # Texto limpio para vectorización
     return " ".join(tokens)
 
 def clasificar(mensaje: str, modelo_nombre: str) -> ClasificacionResponse:
@@ -53,39 +44,23 @@ def clasificar(mensaje: str, modelo_nombre: str) -> ClasificacionResponse:
         ClasificacionResponse: resultado con predicción, etiqueta y confianza.
     """
 
-    # 1. Validación
-
-    # Mensaje vacío
     if not mensaje.strip():
         raise HTTPException(400, "El mensaje no puede estar vacío")
 
-    # Longitud máxima
     if len(mensaje) > 5000:
         raise HTTPException(400, "El mensaje es demasiado largo")
 
-    # Modelo seleccionado
     modelo = modelos.get(modelo_nombre)
 
-    # Validar modelo
     if modelo is None:
         raise HTTPException(400, f"Modelo no válido: {modelo_nombre}")
 
-    # 2. Preprocesamiento
-    
-    # Limpiar texto
     limpio = limpiar(mensaje)
 
-    # Vectorizar texto
     vector = vectorizer.transform([limpio])
 
-    # 3. Inferencia ML
-
-    # Predicción: 1 = spam, 0 = ham
     pred = modelo.predict(vector)[0]
 
-    # 4. Cálculo de confianza
-    
-    # Solo el modelo Naive Bayes Multinomial y Regresion Logistica soportan probabilidades
     if hasattr(modelo, "predict_proba"):
 
         prob = modelo.predict_proba(vector)[0]
@@ -94,11 +69,9 @@ def clasificar(mensaje: str, modelo_nombre: str) -> ClasificacionResponse:
             prob[1] if pred == 1 else prob[0]
         )
     else:
-        # SVM no genera probabilidades directamente. 
-        # Se usa decision_function y luego una función sigmoide
+        # SVM no genera probabilidades directamente. Se usa decision_function y luego una función sigmoide
         d = modelo.decision_function(vector)[0]
 
-        # Evita overflow numérico
         d = max(min(d, 100), -100)
 
         prob = 1 / (1 + math.exp(-d))
@@ -107,7 +80,6 @@ def clasificar(mensaje: str, modelo_nombre: str) -> ClasificacionResponse:
             prob if pred == 1 else 1 - prob
         )
 
-    # 5. Respuesta
     return ClasificacionResponse(
         prediccion=int(pred),
         etiqueta="spam" if pred == 1 else "ham",

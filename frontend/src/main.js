@@ -2,11 +2,9 @@ import "./css/style.css";
 import view from "./view.js";
 import controller from "./controller.js";
 
-// Elementos de la interfaz
 const checkbox = document.getElementById("theme-checkbox");
 const html = document.documentElement;
 
-// localStorage del tema (DaisyUI)
 function setTheme(theme) {
     html.setAttribute("data-theme", theme);
     checkbox.checked = theme === "dim";

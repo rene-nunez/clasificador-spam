@@ -7,9 +7,8 @@ const controller = {
     _input: document.getElementById("input"),
     _form: document.getElementById("form"),
     _history: [], // Historial de mensajes enviados
-    _historyIndex: -1, // -1 = input vacío; 0..n = posición en el historial
+    _historyIndex: -1,
 
-    // Resetear a "auto" antes de medir scrollHeight es necesario para que se encoja al borrar texto
     _autoResize() {
         this._input.style.height = "auto";
         this._input.style.height = this._input.scrollHeight + "px";
@@ -61,7 +60,6 @@ const controller = {
         });
 
         document.addEventListener("keydown", (event) => {
-            // Escape: cierra menú; si el input está enfocado además borra el mensaje
             if (event.key === "Escape") {
                 event.preventDefault();
                 const inputFocused = document.activeElement === this._input;
@@ -76,14 +74,12 @@ const controller = {
         });
 
         this._input.addEventListener("keydown", (event) => {
-            // Enter sin Shift envía el formulario
             if (event.key === "Enter" && !event.shiftKey) {
                 event.preventDefault();
                 this._form.requestSubmit();
                 return;
             }
 
-            // Flecha arriba: navega hacia atrás en el historial
             if (event.key === "ArrowUp" && this._history.length) {
                 event.preventDefault();
                 const idx = Math.max(0, this._historyIndex - 1);
@@ -95,7 +91,6 @@ const controller = {
                 return;
             }
 
-            // Flecha abajo: navega hacia adelante
             if (event.key === "ArrowDown") {
                 const next = this._historyIndex + 1;
                 if (next < this._history.length) {

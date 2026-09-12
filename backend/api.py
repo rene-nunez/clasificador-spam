@@ -1,13 +1,3 @@
-"""
-API REST del Clasificador de Spam usando FastAPI
-
-Inicializa la aplicación FastAPI y expone endpoints,
-configura middleware CORS, conecta servicios de clasificación ML y
-sirve el frontend estático en producción.
-
-Documentación interactiva disponible en /docs (Swagger UI) y /redoc (ReDoc).
-"""
-
 import sys
 import os
 import logging

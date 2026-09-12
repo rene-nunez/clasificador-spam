@@ -1,7 +1,7 @@
 import {getModelos} from "./api.js";
 
 const view = {
-    _modeloActual: "Regresión Logística", // Modelo seleccionado actualmente
+    _modeloActual: "Regresión Logística",
     _errorTimeout: null,
 
     _display: document.getElementById("display"),
@@ -13,7 +13,6 @@ const view = {
         return active ? `${base} text-base-content font-medium` : `${base} text-base-content/60 hover:text-base-content/80 hover:bg-base-200/50`;
     },
 
-    // Sanitiza texto usando el DOM
     _escapar(string) {
         const div = document.createElement("div");
         div.textContent = string;
@@ -28,7 +27,6 @@ const view = {
         return this._modeloActual;
     },
 
-    // Construye el menú con los modelos disponibles. Si el actual ya no existe, usa el primero
     llenarModelos(modelos) {
         if (!modelos.length) return;
 
@@ -102,7 +100,6 @@ const view = {
         </div>`;
     },
 
-    // Los errores se autolimpian a los 5 segundos para no bloquear la interfaz
     mostrarError(texto) {
         if (this._errorTimeout) clearTimeout(this._errorTimeout);
         
@@ -126,7 +123,7 @@ const view = {
         document.getElementById("modelo-btn").addEventListener("click", (event) => {
             event.stopPropagation();
 
-            // Pide los modelos al backend solo en el primer clic
+            // Solicitar los modelos al backend solo en el primer clic
             if (this._menu.children.length === 0) {
                 getModelos().then(modelos => {
                     if (!modelos.length) return;
