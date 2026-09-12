@@ -1,16 +1,8 @@
-"""
-Limpieza de texto del dataset de spam
-
-Elimina duplicados, normaliza el texto (minusculas, puntuacion) 
-y filtra stopwords en español usando nltk.
-"""
-
 import os
 import re
 import pandas as pd
 import nltk
 
-# Descargar stopwords de nltk
 nltk.download("stopwords", quiet=True)
 from nltk.corpus import stopwords
 
@@ -22,21 +14,17 @@ if __name__ == "__main__":
 
     print(f"Dataset cargado: {len(df)} mensajes")
 
-    # 1. Eliminar duplicados
     antes = len(df)
     df = df.drop_duplicates(subset=["mensaje"])
     despues = len(df)
     print(f"\nDuplicados eliminados: {antes - despues}")
 
-    # 2. Pasar a minusculas
     df["mensaje"] = df["mensaje"].str.lower()
 
-    # 3. Eliminar signos de puntuación y caracteres especiales
     df["mensaje_limpio"] = df["mensaje"].apply(
         lambda texto: re.sub(r"[^a-záéíóúüñ0-9\s]", "", texto)
     )
 
-    # 4. Tokenizar y eliminar stopwords
     stop_words = set(stopwords.words("spanish"))
 
     def limpiar_texto(texto):
@@ -46,12 +34,10 @@ if __name__ == "__main__":
 
     df["mensaje_limpio"] = df["mensaje_limpio"].apply(limpiar_texto)
 
-    # 5. Guardar el nuevo dataset limpio
     ruta_salida = os.path.join(BASE_DIR, "data", "spam_limpio.csv")
     df.to_csv(ruta_salida, index=False)
     print(f"\nDataset limpio guardado: data/spam_limpio.csv")
 
-    # 6. Mostrar comparación
     print("\nComparacion antes/despues:")
     for i in range(3):
         original = df["mensaje"].iloc[i]

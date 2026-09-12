@@ -1,10 +1,3 @@
-"""
-Evaluacion de modelos de clasificacion
-
-Calcula matriz de confusion, precision, recall y F1-score
-para cada modelo entrenado. Analiza errores de clasificacion.
-"""
-
 import os
 import pandas as pd
 import joblib
@@ -21,16 +14,13 @@ NOTEBOOK_DIR = os.path.join(BASE_DIR, "notebook")
 if __name__ == "__main__":
     os.makedirs(NOTEBOOK_DIR, exist_ok=True)
 
-    # 1. Cargar test
     test = pd.read_csv(os.path.join(BASE_DIR, "data", "test.csv"))
     test["mensaje_limpio"] = test["mensaje_limpio"].fillna("")
 
-    # 2. Cargar vectorizador y transformar test
     vectorizer = joblib.load(os.path.join(BASE_DIR, "models", "vectorizer.pkl"))
     X_test = vectorizer.transform(test["mensaje_limpio"])
     y_test = test["spam"]
 
-    # 3. Cargar y evaluar cada modelo
     modelos = {
         "Naive Bayes": "naive_bayes.pkl",
         "Regresion Logistica": "regresion_logistica.pkl",
@@ -45,7 +35,6 @@ if __name__ == "__main__":
         modelo = joblib.load(os.path.join(BASE_DIR, "models", archivo))
         y_pred = modelo.predict(X_test)
 
-        # Matriz de confusion
         matriz = confusion_matrix(y_test, y_pred)
         print(f"\nMatriz de confusion:")
         print(f"              Prediccion")
@@ -53,7 +42,6 @@ if __name__ == "__main__":
         print(f"Real  ham  {matriz[0,0]:>4} {matriz[0,1]:>4}")
         print(f"      spam {matriz[1,0]:>4} {matriz[1,1]:>4}")
 
-        # Metricas individuales
         precision = precision_score(y_test, y_pred)
         recall = recall_score(y_test, y_pred)
         f1 = f1_score(y_test, y_pred)
@@ -63,7 +51,6 @@ if __name__ == "__main__":
         print(f"Recall: {recall:.4f}")
         print(f"F1-Score: {f1:.4f}")
 
-        # Gráfico: matriz de confusión
         plt.figure(figsize=(5, 4))
         sns.heatmap(matriz, annot=True, fmt="d", cmap="Blues", xticklabels=["ham", "spam"], yticklabels=["ham", "spam"])
         plt.title(f"Matriz de confusión: {nombre}")
@@ -75,18 +62,15 @@ if __name__ == "__main__":
         print(f"\nGráfico guardado: {archivo_matriz}")
         print("")
 
-    # 4. Análisis de errores comparativo
     print("-" * 30)
     print("Analisis de errores")
     print("-" * 30)
 
-    # Guardar predicciones de los 3 modelos
     predicciones = {}
     for nombre, archivo in modelos.items():
         modelo = joblib.load(os.path.join(BASE_DIR, "models", archivo))
         predicciones[nombre] = modelo.predict(X_test)
 
-    # Tabla comparativa de errores
     print("\nComparacion de errores por modelo:")
     print(f"{'Modelo':25s} {'FP':>5s} {'FN':>5s} {'Total':>5s}")
     print("-" * 42)
@@ -96,7 +80,6 @@ if __name__ == "__main__":
         fn = ((y_test == 1) & (y_pred == 0)).sum()
         print(f"{nombre:25s} {fp:5d} {fn:5d} {fp+fn:5d}")
 
-    # Mostrar mensajes donde todos los modelos fallaron
     test["fp_todos"] = (
         (y_test == 0)
         & (predicciones["Naive Bayes"] == 1)

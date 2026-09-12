@@ -1,9 +1,5 @@
-"""
-Entrenamiento de modelos
 
-Entrena Naive Bayes Multinomial, Regresion Logistica y SVM
-con los datos vectorizados, guarda los modelos entrenados.
-"""
+# Entrena Naive Bayes Multinomial, Regresion Logistica y SVM
 
 import os
 import pandas as pd
@@ -15,14 +11,12 @@ from sklearn.svm import LinearSVC
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 if __name__ == "__main__":
-    # 1. Cargar datasets
     train = pd.read_csv(os.path.join(BASE_DIR, "data", "train.csv"))
     test = pd.read_csv(os.path.join(BASE_DIR, "data", "test.csv"))
 
     train["mensaje_limpio"] = train["mensaje_limpio"].fillna("")
     test["mensaje_limpio"] = test["mensaje_limpio"].fillna("")
 
-    # 2. Cargar vectorizador y transformar datos
     vectorizer = joblib.load(os.path.join(BASE_DIR, "models", "vectorizer.pkl"))
     X_train = vectorizer.transform(train["mensaje_limpio"])
     X_test = vectorizer.transform(test["mensaje_limpio"])
@@ -31,7 +25,6 @@ if __name__ == "__main__":
 
     print(f"Datos cargados: {X_train.shape[0]} train, {X_test.shape[0]} test")
 
-    # 3. Entrenar modelos
     modelos = {
         "Naive Bayes": MultinomialNB(),
         "Regresion Logistica": LogisticRegression(max_iter=1000, random_state=42),
@@ -47,12 +40,10 @@ if __name__ == "__main__":
         resultados.append((nombre, precision))
         print(f"Exactitud en test: {precision:.4f}")
 
-        # Guardar modelo
         archivo = f"{nombre.lower().replace(' ', '_')}.pkl"
         joblib.dump(modelo, os.path.join(BASE_DIR, "models", archivo))
         print(f"Modelo guardado: models/{archivo}")
 
-    # 4. Resumen
     print("\n" + "-" * 30)
     print("Exactitud en test")
     print("-" * 30)

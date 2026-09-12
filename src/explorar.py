@@ -1,10 +1,3 @@
-"""
-Análisis exploratorio del dataset de spam
-
-Este script carga el dataset y nos ayuda a entender cómo son los datos 
-antes de empezar a limpiarlos y entrenar modelos.
-"""
-
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -17,7 +10,6 @@ NOTEBOOK_DIR = os.path.join(BASE_DIR, "notebook")
 if __name__ == "__main__":
     os.makedirs(NOTEBOOK_DIR, exist_ok=True)
 
-    # 1. Cargar datos
     ruta_csv = os.path.join(BASE_DIR, "data", "spam_dataset.csv")
     df = pd.read_csv(ruta_csv)
 
@@ -28,13 +20,11 @@ if __name__ == "__main__":
 
     print("-" * 30)
 
-    # 2. Distribución de clases
     print("\nDistribución de clases")
     print(df["label"].value_counts())
     print(f"\nPorcentajes:")
     print(df["label"].value_counts(normalize=True).mul(100).round(1).astype(str) + "%")
 
-    # Creación del gráfico de barras
     plt.figure(figsize=(6, 4))
     sns.countplot(data=df, x="label", hue="label", palette={"ham": "blue", "spam": "pink"}, legend=False)
     plt.title("Distribución de clases: Ham vs Spam")
@@ -46,13 +36,11 @@ if __name__ == "__main__":
 
     print("-" * 30)
 
-    # 3. Longitud de los mensajes
     df["longitud"] = df["mensaje"].str.len()
 
     print("\nEstadísticas de longitud (caracteres)")
     print(df.groupby("label")["longitud"].describe().round(1))
 
-    # Creación del histograma comparativo
     plt.figure(figsize=(10, 5))
     for clase, color in [("ham", "blue"), ("spam", "pink")]:
         subset = df[df["label"] == clase]["longitud"]
@@ -67,14 +55,11 @@ if __name__ == "__main__":
 
     print("-" * 30)
 
-    # 4. Nubes de palabras por clase
     print("\nNubes de palabras por clase")
 
-    # Unimos todos los mensajes de cada clase en un solo texto
     texto_ham = " ".join(df[df["label"] == "ham"]["mensaje"])
     texto_spam = " ".join(df[df["label"] == "spam"]["mensaje"])
 
-    # Nube de palabras para ham
     plt.figure(figsize=(10, 5))
     plt.subplot(1, 2, 1)
     nube_ham = WordCloud(width=400, height=300, background_color="white", colormap="Blues").generate(texto_ham)
@@ -82,7 +67,6 @@ if __name__ == "__main__":
     plt.axis("off")
     plt.title("Palabras ham más frecuentes")
 
-    # Nube de palabras para spam
     plt.subplot(1, 2, 2)
     nube_spam = WordCloud(width=400, height=300, background_color="white", colormap="Reds").generate(texto_spam)
     plt.imshow(nube_spam, interpolation="bilinear")
@@ -95,7 +79,6 @@ if __name__ == "__main__":
 
     print("-" * 30)
 
-    # 5. Mostrar ejemplos
     print("\nEjemplos de ham")
     print(df[df["label"] == "ham"]["mensaje"].iloc[:5].to_string(index=False))
 
@@ -104,7 +87,6 @@ if __name__ == "__main__":
 
     print("-" * 30)
 
-    # 6. Datos faltantes y duplicados
     print(f"\nCalidad de datos")
     print(f"Valores nulos: {df.isnull().sum().sum()}")
     duplicados = df.duplicated(subset=["mensaje"]).sum()

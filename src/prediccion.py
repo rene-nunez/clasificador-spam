@@ -1,10 +1,3 @@
-"""
-Clasificar mensajes nuevos como spam o ham
-
-Carga los modelos entrenados y permite probar mensajes
-personalizados para ver si los detectan correctamente.
-"""
-
 import os
 import re
 import math
@@ -17,7 +10,6 @@ nltk.download("stopwords", quiet=True)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 stop_words = set(stopwords.words("spanish"))
 
-# 1. Cargar modelos y vectorizador
 vectorizer = joblib.load(os.path.join(BASE_DIR, "models", "vectorizer.pkl"))
 
 modelos = {
@@ -26,7 +18,6 @@ modelos = {
     "SVM": joblib.load(os.path.join(BASE_DIR, "models", "svm.pkl")),
 }
 
-# 2. Limpiar el mensaje entrante
 def limpiar_mensaje(texto):
     texto = texto.lower()
     texto = re.sub(r"[^a-záéíóúüñ0-9\s]", "", texto)
@@ -34,7 +25,6 @@ def limpiar_mensaje(texto):
     tokens = [t for t in tokens if t not in stop_words and len(t) > 1]
     return " ".join(tokens)
 
-# 3. Clasificar con un modelo
 def clasificar(texto, modelo):
     limpio = limpiar_mensaje(texto)
     vector = vectorizer.transform([limpio])
@@ -50,7 +40,6 @@ def clasificar(texto, modelo):
 
     return pred, conf
 
-# 4. Modo interactivo
 if __name__ == "__main__":
     nombres = list(modelos.keys())
     idx = 0

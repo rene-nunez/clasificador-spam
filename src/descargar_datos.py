@@ -11,7 +11,6 @@ if __name__ == "__main__":
 
     df = pd.DataFrame(dataset["train"])
 
-    # Renombrar columnas y valores
     df.rename(columns={"text": "mensaje", "labels": "spam"}, inplace=True)
     df["label"] = df["spam"].map({0: "ham", 1: "spam"})
 

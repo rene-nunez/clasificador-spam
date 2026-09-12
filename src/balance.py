@@ -1,9 +1,4 @@
-"""
-Division del dataset en entrenamiento (80%) y prueba (20%)
-
-El modelo se entrena con train y se evalua con test 
-para medir su rendimiento en datos que nunca ha visto.
-"""
+# Division del dataset en entrenamiento (80%) y prueba (20%)
 
 import os
 import pandas as pd
@@ -17,14 +12,11 @@ if __name__ == "__main__":
 
     print(f"Dataset cargado: {len(df)} mensajes")
 
-    # Dividir el DataFrame directamente en train (80%) y test (20%)
-    # stratify=df["spam"] mantiene la misma proporción spam/ham en ambos
-    # random_state=42 fija la semilla para que sea reproducible
+    random_state=42 fija la semilla para que sea reproducible
     train, test = train_test_split(
         df, test_size=0.2, random_state=42, stratify=df["spam"]
     )
 
-    # Guardar
     train.to_csv(os.path.join(BASE_DIR, "data", "train.csv"), index=False)
     test.to_csv(os.path.join(BASE_DIR, "data", "test.csv"), index=False)
 
